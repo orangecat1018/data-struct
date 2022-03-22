@@ -3,7 +3,6 @@
 #include <iomanip>
 #include<stdlib.h>
 using namespace std;
-//#define OVERFLOW 0
 #define OK 1
 typedef int Status;
 typedef char ElemType;
@@ -13,7 +12,8 @@ typedef struct BiTree
     struct BiTree *Lchild;
     struct BiTree *Rchild;
 }BiTree,*Binary_Tree;
-//创建一个二叉树
+
+//前序遍历创建一个二叉树
 Status CreateBiTree(Binary_Tree &T)
 {
     char ch;
@@ -31,7 +31,8 @@ Status CreateBiTree(Binary_Tree &T)
    }
    return OK;
 }
-//先遍历二叉树
+
+//前序遍历二叉树
 Status PreShowBiTree(Binary_Tree T)
 {
     if(T!=NULL)
@@ -43,7 +44,7 @@ Status PreShowBiTree(Binary_Tree T)
     return OK;
 }
 
-//中遍历二叉树
+//中序遍历二叉树
 Status MidShowBiTree(Binary_Tree T)
 {
     if(T!=NULL)
@@ -55,7 +56,7 @@ Status MidShowBiTree(Binary_Tree T)
     return OK;
 }
 
-//后遍历二叉树
+//后序遍历二叉树
 Status BehShowBiTree(Binary_Tree T)
 {
     if(T!=NULL)
