@@ -1,0 +1,115 @@
+#include <iostream>
+#include <math.h>
+#include <cstdlib>
+#include <vector>
+#include <limits.h>
+using namespace std;
+
+vector<int> gen_unsorted(int array_size = 11, int min = 1, int max = 500)
+{
+	vector<int> unSorted;
+	for (int i = 0; i < array_size; ++i) {
+		unSorted.push_back((rand() % (max - min + 1)) + min);  //[min,max]
+	}
+	return unSorted;
+}
+
+void print_vector(vector<int> vec, int begin_idx = 0, int end_idx = NULL)
+{
+	if (end_idx == NULL) {
+		end_idx =vec.size()- 1;
+	}
+	for (int i = begin_idx; i <= end_idx; ++i) {
+		cout << vec[i] << ", ";
+	}
+	cout << endl;
+}
+
+
+//Insertion_Sort_part，对一个array的部分[begin_idx，end_idx]进行排序
+void insertion_sort_part(vector<int> &arrayA, int begin_idx = 0, int end_idx = NULL)
+{
+	for(int i=0;i<end_idx+1;i++)
+	{
+	    for(int j=i;j<end_idx+1;j++)
+		{
+		    int temp;
+			if(arrayA[i]>arrayA[j])
+			{temp=arrayA[i];arrayA[i]=arrayA[j];arrayA[j]=temp;}
+		}
+	}
+	cout << "Insert Sort\t:";
+	print_vector(arrayA, begin_idx, end_idx);
+}
+
+void merge(vector<int> &arrayA, int p, int q, int r)
+ {
+    vector<int> LeftSubArray(arrayA.begin() + p,arrayA.begin() + q +1);     //定义左右vector的长度
+    vector<int> RightSubArray(arrayA.begin() +q + 1, arrayA.begin() + r + 1);
+    int idxLeft = 0, idxRight = 0;
+    LeftSubArray.insert(LeftSubArray.end(), numeric_limits<int>::max());
+    RightSubArray.insert(RightSubArray.end(), numeric_limits<int>::max());  //加入哨兵
+    // Pick min of LeftSubArray[idxLeft] and RightSubArray[idxRight], and put into Array[i]
+    for (int i =p; i <=r; i++) {
+        if (LeftSubArray[idxLeft] < RightSubArray[idxRight]) {
+           arrayA[i] = LeftSubArray[idxLeft];
+            idxLeft++;
+        } else {
+            arrayA[i] = RightSubArray[idxRight];
+            idxRight++;
+        }
+    }}
+
+
+//当数组长度小于等于10时，采用insertion_sort；否则 merge
+void MergeSort(vector<int> &Array, int front, int end) {
+    if (front >= end)
+	       return;   //front=end，已经分到只有一个数，不能再分，返回上一级
+    int mid = (front + end) / 2;
+    MergeSort(Array, front, mid);
+    MergeSort(Array, mid + 1, end);
+
+	int p,q,r;
+	p=front;q=mid;r=end;
+    vector<int> LeftSubArray(Array.begin() + p,Array.begin() + q +1);     //定义左右vector的长度
+    vector<int> RightSubArray(Array.begin() +q + 1, Array.begin() + r + 1);
+    int idxLeft = 0, idxRight = 0;
+    LeftSubArray.insert(LeftSubArray.end(), numeric_limits<int>::max());
+    RightSubArray.insert(RightSubArray.end(), numeric_limits<int>::max());  //加入哨兵
+    // Pick min of LeftSubArray[idxLeft] and RightSubArray[idxRight], and put into Array[i]
+    for (int i =p; i <=r; i++) {
+        if (LeftSubArray[idxLeft] < RightSubArray[idxRight]) {
+           Array[i] = LeftSubArray[idxLeft];
+            idxLeft++;
+        } else {
+            Array[i] = RightSubArray[idxRight];
+            idxRight++;
+        }
+    }
+}
+
+vector<int> merge_insert_sort(vector<int> arrayA, int p, int r)
+{
+	if(r>9)
+	{
+		int q=(p+r+1)/2;
+		MergeSort(arrayA,p,r);
+	}
+	else
+		insertion_sort_part(arrayA,p,r);
+	return arrayA;
+}
+
+
+int main()
+{
+	vector<int> unSorted = gen_unsorted();
+	cout << "Input array\t:";
+	print_vector(unSorted);
+	cout << "\n";
+	vector<int> Sorted = merge_insert_sort(unSorted, 0, unSorted.size() - 1);
+	cout << "\n";
+	cout << "Sorted array\t:";
+	print_vector(Sorted);
+	system("pause");
+}
